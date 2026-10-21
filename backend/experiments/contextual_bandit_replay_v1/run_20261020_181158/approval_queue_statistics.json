@@ -1,0 +1,18 @@
+{
+  "Contextual bandit (greedy held-out)": {
+    "queued": 4,
+    "live_approval_simulated": false
+  },
+  "Fixed rules": {
+    "queued": 0,
+    "live_approval_simulated": false
+  },
+  "Always HUMAN_REVIEW": {
+    "queued": 0,
+    "live_approval_simulated": false
+  },
+  "Random (seeded)": {
+    "queued": 1,
+    "live_approval_simulated": false
+  }
+}

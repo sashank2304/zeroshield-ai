@@ -1,0 +1,10 @@
+Python: 3.13.4
+PyTorch: 2.14.0+cpu
+scikit-learn: 1.8.0
+pandas: 3.0.2
+NumPy: 2.1.3
+Matplotlib: 3.9.2
+Device: cpu
+CPU: AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
+Logical CPUs: 12
+CUDA available: False

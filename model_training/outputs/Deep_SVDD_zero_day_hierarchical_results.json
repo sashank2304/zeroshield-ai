@@ -1,0 +1,111 @@
+{
+  "model": "Deep SVDD",
+  "model_file": "model_training/outputs/Deep_SVDD_Tuned.pt",
+  "config_file": "model_training/outputs/Deep_SVDD_hierarchical_config.json",
+  "thresholds": {
+    "low": {
+      "percentile": 92.0,
+      "score": 0.04083193272352222
+    },
+    "high": {
+      "percentile": 98.0,
+      "score": 0.12980574011802667
+    }
+  },
+  "zero_day_rows": 2658953,
+  "zero_day_attack_coverage": {
+    "total_attacks": 2658953,
+    "low_anomaly": 14307,
+    "weak_anomaly": 5843,
+    "strong_anomaly": 2638803,
+    "investigation_coverage": 0.994619310683566,
+    "strong_anomaly_rate": 0.9924218291936714
+  },
+  "bucket_counts": {
+    "LOW ANOMALY": {
+      "total": 14307,
+      "attack": 14307,
+      "benign": 0
+    },
+    "WEAK ANOMALY": {
+      "total": 5843,
+      "attack": 5843,
+      "benign": 0
+    },
+    "STRONG ANOMALY": {
+      "total": 2638803,
+      "attack": 2638803,
+      "benign": 0
+    }
+  },
+  "category_results": {
+    "Backdoor_Malware": {
+      "total": 3218,
+      "low": 1585,
+      "weak": 645,
+      "strong": 988
+    },
+    "BrowserHijacking": {
+      "total": 5859,
+      "low": 3898,
+      "weak": 1372,
+      "strong": 589
+    },
+    "CommandInjection": {
+      "total": 5409,
+      "low": 2990,
+      "weak": 1348,
+      "strong": 1071
+    },
+    "Mirai-greeth_flood": {
+      "total": 991866,
+      "low": 9,
+      "weak": 26,
+      "strong": 991831
+    },
+    "Mirai-greip_flood": {
+      "total": 751682,
+      "low": 5,
+      "weak": 266,
+      "strong": 751411
+    },
+    "Mirai-udpplain": {
+      "total": 890576,
+      "low": 99,
+      "weak": 141,
+      "strong": 890336
+    },
+    "SqlInjection": {
+      "total": 5245,
+      "low": 2246,
+      "weak": 1192,
+      "strong": 1807
+    },
+    "Uploading_Attack": {
+      "total": 1252,
+      "low": 990,
+      "weak": 202,
+      "strong": 60
+    },
+    "XSS": {
+      "total": 3846,
+      "low": 2485,
+      "weak": 651,
+      "strong": 710
+    }
+  },
+  "family_results": {
+    "Mirai": {
+      "total": 2634124,
+      "low": 113,
+      "weak": 433,
+      "strong": 2633578
+    },
+    "Web-Based": {
+      "total": 24829,
+      "low": 14194,
+      "weak": 5410,
+      "strong": 5225
+    }
+  }
+}

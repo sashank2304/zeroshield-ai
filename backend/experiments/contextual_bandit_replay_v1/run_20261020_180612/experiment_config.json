@@ -1,0 +1,10 @@
+{
+  "seed": 20261020,
+  "algorithm": "LinUCB",
+  "alpha": 0.25,
+  "reward_version": "designed-simulation-v1",
+  "split": "5 attack categories train; BenignTraffic plus 4 attack categories held out",
+  "stream": "ten cached project samples; first 5 non-benign categories train, remaining 4 non-benign plus benign evaluate",
+  "limitations": "Tiny category cache, one benign row, category-level split only; no generalization or statistical significance claim.",
+  "labels_in_context": false
+}

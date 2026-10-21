@@ -1,0 +1,108 @@
+{
+  "model_file": "model_training/outputs/Deep_SVDD_Tuned.pt",
+  "training_file": "train_benign_only.csv",
+  "validation_file": "validation_set.csv",
+  "zero_day_used": false,
+  "features": [
+    "flow_duration",
+    "Header_Length",
+    "Protocol Type",
+    "Duration",
+    "Rate",
+    "Drate",
+    "fin_flag_number",
+    "syn_flag_number",
+    "rst_flag_number",
+    "psh_flag_number",
+    "ack_flag_number",
+    "ece_flag_number",
+    "cwr_flag_number",
+    "ack_count",
+    "syn_count",
+    "fin_count",
+    "urg_count",
+    "rst_count",
+    "HTTP",
+    "HTTPS",
+    "DNS",
+    "Telnet",
+    "SMTP",
+    "SSH",
+    "IRC",
+    "TCP",
+    "UDP",
+    "DHCP",
+    "ARP",
+    "ICMP",
+    "IPv",
+    "AVG",
+    "Std",
+    "IAT",
+    "Number",
+    "Radius",
+    "Weight",
+    "SYNRatio",
+    "ACKRatio",
+    "RSTRatio",
+    "FINRatio",
+    "SYN_ACK_Ratio",
+    "PacketDensity"
+  ],
+  "selection_rule": {
+    "low_threshold": "Highest validation recall with FPR <= 10.0%",
+    "high_threshold": "Highest validation recall with FPR <= 2.0%"
+  },
+  "thresholds": {
+    "low": {
+      "percentile": 92.0,
+      "score": 0.04083193272352222
+    },
+    "high": {
+      "percentile": 98.0,
+      "score": 0.12980574011802667
+    }
+  },
+  "validation_at_low": {
+    "percentile": 92.0,
+    "threshold": 0.04083193272352222,
+    "validation_precision": 0.9995847692974044,
+    "validation_recall": 0.9891081184457038,
+    "validation_f1": 0.9943188478023608,
+    "validation_accuracy": 0.9887551532742967,
+    "validation_fpr": 0.0797787715935711,
+    "validation_specificity": 0.920221228406429
+  },
+  "validation_at_high": {
+    "percentile": 98.0,
+    "threshold": 0.12980574011802667,
+    "validation_precision": 0.9998957178687677,
+    "validation_recall": 0.9857648299795554,
+    "validation_f1": 0.9927799929250366,
+    "validation_accuracy": 0.9857354870602216,
+    "validation_fpr": 0.019961917646911447,
+    "validation_specificity": 0.9800380823530885
+  },
+  "routing_validation": {
+    "normal": {
+      "total": 484559,
+      "attack": 337642,
+      "benign": 146917,
+      "attack_fraction": 69.68026597380299,
+      "benign_fraction": 30.319734026197015
+    },
+    "weak_anomaly": {
+      "total": 113190,
+      "attack": 103640,
+      "benign": 9550,
+      "attack_fraction": 91.56285890979768,
+      "benign_fraction": 8.437141090202315
+    },
+    "strong_anomaly": {
+      "total": 30561324,
+      "attack": 30558137,
+      "benign": 3187,
+      "attack_fraction": 99.98957178687677,
+      "benign_fraction": 0.010428213123227253
+    }
+  }
+}

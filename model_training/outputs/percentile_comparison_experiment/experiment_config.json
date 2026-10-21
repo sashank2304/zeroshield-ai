@@ -1,0 +1,353 @@
+{
+  "experiment": "ZeroShield AI six-model percentile comparison",
+  "start_time_utc": "2026-10-04T11:43:48.771010+00:00",
+  "project_root": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project",
+  "experiment_directory": "model_training/outputs/percentile_comparison_experiment",
+  "datasets": {
+    "benign_training_source": "train_benign_only.csv",
+    "validation_evaluation": "validation_set.csv",
+    "zero_day_evaluation": "zero_day_test_scaled_v2.csv",
+    "training_source_rows_scanned": 878328,
+    "training_rows": 500000,
+    "benign_reference_rows": 100000,
+    "validation_rows": 31159073,
+    "zero_day_rows": 2658953
+  },
+  "features": [
+    "flow_duration",
+    "Header_Length",
+    "Protocol Type",
+    "Duration",
+    "Rate",
+    "Drate",
+    "fin_flag_number",
+    "syn_flag_number",
+    "rst_flag_number",
+    "psh_flag_number",
+    "ack_flag_number",
+    "ece_flag_number",
+    "cwr_flag_number",
+    "ack_count",
+    "syn_count",
+    "fin_count",
+    "urg_count",
+    "rst_count",
+    "HTTP",
+    "HTTPS",
+    "DNS",
+    "Telnet",
+    "SMTP",
+    "SSH",
+    "IRC",
+    "TCP",
+    "UDP",
+    "DHCP",
+    "ARP",
+    "ICMP",
+    "IPv",
+    "AVG",
+    "Std",
+    "IAT",
+    "Number",
+    "Radius",
+    "Weight",
+    "SYNRatio",
+    "ACKRatio",
+    "RSTRatio",
+    "FINRatio",
+    "SYN_ACK_Ratio",
+    "PacketDensity"
+  ],
+  "raw_feature_count": null,
+  "preprocessing": {
+    "feature_representation": "Existing 43-column prepared/scaled CSV values; no scaler was fitted or refitted.",
+    "scaling_documentation": "Project documentation identifies StandardScaler-prepared data; no fitted scaler artifact or raw transformation script exists in this repository, so fit-source details are unavailable.",
+    "cleaning": "Replace +/- infinity with NaN, fill NaN with 0, cast features to float32.",
+    "label_rule": "Use numeric binary_label; where missing, label == BenignTraffic maps to 0 and every other label maps to 1."
+  },
+  "seed": 42,
+  "random_sample_method": "Uniform fixed-size sample by independent seeded random priorities; disjoint random permutation split.",
+  "percentiles": [
+    90,
+    93,
+    95,
+    97,
+    99
+  ],
+  "threshold_methodology": "For each fitted model, score 100,000 disjoint benign reference rows not used for fitting; use NumPy percentile (linear default) at each requested percentile; freeze cuts and apply unchanged to validation and zero-day files. No labels or attack scores determine thresholds.",
+  "evaluation_methodology": "Stream validation_set.csv and zero_day_test_scaled_v2.csv in chunks of 50,000. Apply all five frozen thresholds per score pass. Positive means anomaly score >= threshold.",
+  "sample_sizes": {
+    "common benign sampled pool": 600000,
+    "neural and Deep SVDD training": 500000,
+    "threshold reference": 100000,
+    "OCSVM fit subset": 10000,
+    "validation": 31159073,
+    "zero_day": 2658953
+  },
+  "model_configurations": {
+    "AE": {
+      "architecture": "43-64-32-16-32-64-43",
+      "loss": "mean squared reconstruction error",
+      "optimizer": "Adam",
+      "hidden_widths": [
+        64,
+        32
+      ],
+      "latent_dim": 16,
+      "activation": "ReLU",
+      "epochs": 8,
+      "batch_size": 2048,
+      "learning_rate": 0.001,
+      "early_stopping": false,
+      "weight_decay": 0
+    },
+    "VAE": {
+      "architecture": "43-64-32-(mu/logvar 16)-32-64-43",
+      "loss": "MSE + 0.01 * KL; score is MSE decoded from mu",
+      "optimizer": "Adam",
+      "hidden_widths": [
+        64,
+        32
+      ],
+      "latent_dim": 16,
+      "activation": "ReLU",
+      "epochs": 8,
+      "batch_size": 2048,
+      "learning_rate": 0.001,
+      "kl_weight": 0.01,
+      "early_stopping": false
+    },
+    "DAE": {
+      "architecture": "43-64-32-16-32-64-43",
+      "loss": "MSE on clean target with Gaussian input noise std 0.05",
+      "optimizer": "Adam",
+      "hidden_widths": [
+        64,
+        32
+      ],
+      "latent_dim": 16,
+      "activation": "ReLU",
+      "noise_distribution": "Gaussian",
+      "noise_std": 0.05,
+      "epochs": 8,
+      "batch_size": 2048,
+      "learning_rate": 0.001
+    },
+    "CAE": {
+      "architecture": "43-64(sigmoid)-16-64(ReLU)-43",
+      "loss": "MSE + 1e-4 * contractive penalty",
+      "optimizer": "Adam",
+      "latent_dim": 16,
+      "contractive_lambda": 0.0001,
+      "epochs": 8,
+      "batch_size": 2048,
+      "learning_rate": 0.001
+    },
+    "Deep SVDD": {
+      "architecture": "43-64-32-16; bias-free ReLU encoder",
+      "loss": "squared distance to fixed center; weight decay 1e-6",
+      "optimizer": "Adam",
+      "latent_dim": 16,
+      "epochs": 8,
+      "batch_size": 2048,
+      "learning_rate": 0.001,
+      "weight_decay": 1e-06,
+      "center_rule": "mean encoder output on training benign subset; abs values below 1e-3 clamped with sign"
+    },
+    "OCSVM": {
+      "architecture": "RBF OneClassSVM on seeded 10,000-row subset",
+      "loss": null,
+      "optimizer": null,
+      "kernel": "rbf",
+      "gamma": "scale",
+      "nu": 0.05,
+      "cache_size_mb": 1024,
+      "tol": 0.001,
+      "shrinking": true,
+      "random_state": 42,
+      "support_vectors": 517,
+      "support_vectors_per_class": [
+        517
+      ]
+    }
+  },
+  "thresholds": [
+    {
+      "Model": "AE",
+      "Threshold_90": 0.051835076138377206,
+      "Threshold_93": 0.07119970418512822,
+      "Threshold_95": 0.09189649634063204,
+      "Threshold_97": 0.12446463778614994,
+      "Threshold_99": 0.2304471622407428
+    },
+    {
+      "Model": "VAE",
+      "Threshold_90": 0.068680676817894,
+      "Threshold_93": 0.08813008248806005,
+      "Threshold_95": 0.1077687513083219,
+      "Threshold_97": 0.13850185573101037,
+      "Threshold_99": 0.23119309201836577
+    },
+    {
+      "Model": "DAE",
+      "Threshold_90": 0.04051307886838913,
+      "Threshold_93": 0.0529714296758175,
+      "Threshold_95": 0.06991801150143143,
+      "Threshold_97": 0.09969375275075433,
+      "Threshold_99": 0.16882549479603734
+    },
+    {
+      "Model": "CAE",
+      "Threshold_90": 0.023814403265714646,
+      "Threshold_93": 0.032368949949741474,
+      "Threshold_95": 0.0456039376556873,
+      "Threshold_97": 0.07715456239879126,
+      "Threshold_99": 0.13896989896893477
+    },
+    {
+      "Model": "Deep SVDD",
+      "Threshold_90": 2.086572403641185e-05,
+      "Threshold_93": 3.0050146615394672e-05,
+      "Threshold_95": 4.199612867523668e-05,
+      "Threshold_97": 6.580939181731082e-05,
+      "Threshold_99": 0.00017014507218846115
+    },
+    {
+      "Model": "OCSVM",
+      "Threshold_90": -2.618773100745223,
+      "Threshold_93": -1.2730831265570517,
+      "Threshold_95": 0.09812517519171066,
+      "Threshold_97": 3.356578888543926,
+      "Threshold_99": 13.864610357406127
+    }
+  ],
+  "training_records": [
+    {
+      "model": "AE",
+      "label": "Autoencoder",
+      "training_time_seconds": 61.70760710000013,
+      "training_loss": 0.03618919267794307,
+      "training_rows": 500000,
+      "reference_rows": 100000,
+      "checkpoint": "model_training/outputs/percentile_comparison_experiment/models/AE.pt",
+      "thresholds": {
+        "90": 0.051835076138377206,
+        "93": 0.07119970418512822,
+        "95": 0.09189649634063204,
+        "97": 0.12446463778614994,
+        "99": 0.2304471622407428
+      }
+    },
+    {
+      "model": "VAE",
+      "label": "Variational Autoencoder",
+      "training_time_seconds": 30.53799960000015,
+      "training_loss": 0.09678002630873603,
+      "training_rows": 500000,
+      "reference_rows": 100000,
+      "checkpoint": "model_training/outputs/percentile_comparison_experiment/models/VAE.pt",
+      "thresholds": {
+        "90": 0.068680676817894,
+        "93": 0.08813008248806005,
+        "95": 0.1077687513083219,
+        "97": 0.13850185573101037,
+        "99": 0.23119309201836577
+      }
+    },
+    {
+      "model": "DAE",
+      "label": "Denoising Autoencoder",
+      "training_time_seconds": 28.620860999999422,
+      "training_loss": 0.040523513649799385,
+      "training_rows": 500000,
+      "reference_rows": 100000,
+      "checkpoint": "model_training/outputs/percentile_comparison_experiment/models/DAE.pt",
+      "thresholds": {
+        "90": 0.04051307886838913,
+        "93": 0.0529714296758175,
+        "95": 0.06991801150143143,
+        "97": 0.09969375275075433,
+        "99": 0.16882549479603734
+      }
+    },
+    {
+      "model": "CAE",
+      "label": "Contractive Autoencoder",
+      "training_time_seconds": 26.369088000000374,
+      "training_loss": 0.09834891141829442,
+      "training_rows": 500000,
+      "reference_rows": 100000,
+      "checkpoint": "model_training/outputs/percentile_comparison_experiment/models/CAE.pt",
+      "thresholds": {
+        "90": 0.023814403265714646,
+        "93": 0.032368949949741474,
+        "95": 0.0456039376556873,
+        "97": 0.07715456239879126,
+        "99": 0.13896989896893477
+      }
+    },
+    {
+      "model": "Deep SVDD",
+      "label": "Deep SVDD",
+      "training_time_seconds": 26.193945400000302,
+      "training_loss": 2.1132839861003995e-05,
+      "training_rows": 500000,
+      "reference_rows": 100000,
+      "checkpoint": "model_training/outputs/percentile_comparison_experiment/models/Deep_SVDD.pt",
+      "thresholds": {
+        "90": 2.086572403641185e-05,
+        "93": 3.0050146615394672e-05,
+        "95": 4.199612867523668e-05,
+        "97": 6.580939181731082e-05,
+        "99": 0.00017014507218846115
+      }
+    },
+    {
+      "model": "OCSVM",
+      "label": "One-Class SVM",
+      "training_time_seconds": 0.4164913999993587,
+      "training_loss": null,
+      "training_rows": 10000,
+      "reference_rows": 100000,
+      "checkpoint": "model_training/outputs/percentile_comparison_experiment/models/One_Class_SVM.joblib",
+      "thresholds": {
+        "90": -2.618773100745223,
+        "93": -1.2730831265570517,
+        "95": 0.09812517519171066,
+        "97": 3.356578888543926,
+        "99": 13.864610357406127
+      }
+    }
+  ],
+  "environment": {
+    "python": "3.13.4",
+    "torch": "2.14.0+cpu",
+    "scikit_learn": "1.8.0",
+    "pandas": "3.0.2",
+    "numpy": "2.1.3",
+    "device": "cpu",
+    "cuda_available": false,
+    "cpu": "AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD",
+    "logical_cpus": 12
+  },
+  "sanity_checks": {
+    "model_percentile_rows": 30,
+    "category_rows": 270,
+    "all_checks_passed": true
+  },
+  "warnings": [
+    "PyTorch emitted a read-only NumPy view warning during existing inference scoring; the view was read-only in use. The runner was later updated to create writable contiguous sample arrays for future reproductions.",
+    "scikit-learn warned that OCSVM was fitted with an unnamed NumPy array and scored on named DataFrame chunks. The same 43 features in the saved order were supplied. The runner was later updated to use NumPy arrays for OCSVM scoring.",
+    "VAE training loss rose to 16.731732 at epoch 4 and returned to 0.096780 at epoch 8. Training and evaluation completed."
+  ],
+  "end_time_utc": "2026-10-04T12:46:56.475164+00:00",
+  "experiment_duration_seconds": 3787.704154,
+  "assumptions": [
+    "Training and reference observations are a seeded row-level random split of the existing benign-only prepared dataset.",
+    "The prepared files are treated as already StandardScaler-transformed; the fitted scaler and raw-data transformation procedure were not present in the repository."
+  ],
+  "corrections": [
+    "Threshold calibration is independent of model fitting: 100,000 benign rows were reserved outside the 500,000 training rows.",
+    "Post-run runner edits remove OCSVM feature-name warnings and ensure writable contiguous sample arrays for future reproductions; they do not alter the completed model files or results."
+  ]
+}

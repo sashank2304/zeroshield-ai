@@ -1,0 +1,24 @@
+{
+  "model": "Deep SVDD",
+  "checkpoint": "Deep_SVDD.pt",
+  "architecture": [
+    43,
+    64,
+    32,
+    16
+  ],
+  "latent_dimension": 16,
+  "score_definition": "squared Euclidean distance from center",
+  "perturbation": "replace one standardized feature with zero",
+  "contribution_definition": "original anomaly score minus perturbed anomaly score",
+  "threshold": 0.06141921,
+  "threshold_verified_for_checkpoint": false,
+  "samples_explained": 20,
+  "features_per_sample": 43,
+  "top_k": 10,
+  "files": [
+    "xai_results\\xai_per_feature.csv",
+    "xai_results\\xai_top_features.csv"
+  ],
+  "caveat": "Local perturbation sensitivity, not causal proof. Threshold must be verified for this exact checkpoint."
+}

@@ -1,0 +1,24 @@
+
+{
+  "alert_id": "DEMO-MIRAI-001",
+  "detector_status": "anomaly",
+  "anomaly_score": 0.15,
+  "threshold": 0.06141921,
+  "top_features": [
+    {
+      "feature": "Flow Packets/s",
+      "contribution": 0.04,
+      "source": "illustrative demonstration value"
+    }
+  ],
+  "traffic_indicators": {
+    "packets_per_second": 25000,
+    "bytes_per_second": 18000000,
+    "baseline_comparisons": {
+      "packets_per_second": {
+        "ratio_to_baseline": 12.5
+      }
+    }
+  }
+}
+

@@ -1,0 +1,314 @@
+{
+  "project": "ZeroShield AI",
+  "purpose": "Evidence-constrained MITRE ATT&CK contextualization",
+  "rules": [
+    "The detector/XAI evidence comes before ATT&CK contextualization.",
+    "The LLM may select only from allowed candidates supplied for the observed class.",
+    "The LLM must not invent a technique ID, attack class, feature, or evidence.",
+    "Candidate/conditional techniques must retain their qualification text.",
+    "Flow-level XAI is supporting evidence, not proof of host/browser execution or persistence."
+  ],
+  "mappings": [
+    {
+      "attack_class": "BenignTraffic",
+      "allowed_mitre_candidates": [],
+      "top_xai_features": [
+        "IAT",
+        "Number",
+        "Weight",
+        "TCP",
+        "ack_flag_number",
+        "UDP",
+        "HTTP",
+        "ack_count",
+        "psh_flag_number",
+        "Radius"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "Backdoor_Malware",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1505.003",
+          "technique_name": "Server Software Component: Web Shell",
+          "tactic": "Persistence",
+          "mapping_status": "conditional",
+          "confidence": "medium",
+          "reason": "CIC-IoT-2023 defines Backdoor Malware as installing malware that creates a hidden entry point for later unauthorized access. Because this is a web-based attack and the dataset uses DVWA/Remot3d, T1505.003 is a reasonable contextual candidate when the observed backdoor is implemented as a web shell or web-accessible server-side script.",
+          "qualification": "Do not mark T1505.003 as confirmed from flow features alone. Confirm with web-root/file-creation/process evidence or a documented web-shell implementation.",
+          "source": "https://attack.mitre.org/techniques/T1505/003/"
+        }
+      ],
+      "top_xai_features": [
+        "IAT",
+        "Number",
+        "Weight",
+        "TCP",
+        "ack_flag_number",
+        "SYNRatio",
+        "HTTPS",
+        "RSTRatio",
+        "UDP",
+        "Std"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "BrowserHijacking",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1185",
+          "technique_name": "Browser Session Hijacking",
+          "tactic": "Collection",
+          "mapping_status": "candidate_requires_host_evidence",
+          "confidence": "low",
+          "reason": "The dataset's Browser Hijacking attack modifies browser settings such as the home page, search engine, or bookmarks and redirects the user. T1185 covers browser/session hijacking, but its ATT&CK definition is more specific to session takeover, cookies, certificates, or browser pivoting.",
+          "qualification": "Keep this as a candidate only. Do not report T1185 as confirmed unless host/browser telemetry demonstrates session hijacking behavior.",
+          "source": "https://attack.mitre.org/techniques/T1185/"
+        },
+        {
+          "technique_id": "T1189",
+          "technique_name": "Drive-by Compromise",
+          "tactic": "Initial Access",
+          "mapping_status": "candidate_requires_host_evidence",
+          "confidence": "low",
+          "reason": "T1189 includes malicious script injection into web pages, but the dataset's Browser Hijacking label does not by itself prove a drive-by compromise.",
+          "qualification": "Use only when browser/network evidence shows compromise through a user's visit to attacker-controlled or compromised web content.",
+          "source": "https://attack.mitre.org/techniques/T1189/"
+        }
+      ],
+      "top_xai_features": [
+        "Weight",
+        "IAT",
+        "Number",
+        "syn_count",
+        "TCP",
+        "HTTPS",
+        "UDP",
+        "ack_flag_number",
+        "psh_flag_number",
+        "urg_count"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "CommandInjection",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1190",
+          "technique_name": "Exploit Public-Facing Application",
+          "tactic": "Initial Access",
+          "mapping_status": "contextual",
+          "confidence": "high",
+          "reason": "CIC-IoT-2023 describes Command Injection as targeting a web application by injecting commands into an input field. MITRE T1190 explicitly covers exploitation of Internet-facing web applications/services.",
+          "qualification": "The mapping identifies the exploitation context. Flow-only data does not prove which command interpreter was executed after exploitation.",
+          "source": "https://attack.mitre.org/techniques/T1190/"
+        },
+        {
+          "technique_id": "T1059",
+          "technique_name": "Command and Scripting Interpreter",
+          "tactic": "Execution",
+          "mapping_status": "candidate_requires_execution_evidence",
+          "confidence": "medium",
+          "reason": "The dataset states that successful Command Injection can result in arbitrary command execution. T1059 covers adversary abuse of command/script interpreters.",
+          "qualification": "Only promote to a reported technique when endpoint/process telemetry or application logs show the interpreter used. Do not guess a sub-technique such as PowerShell, Windows Command Shell, Unix Shell, or JavaScript.",
+          "source": "https://attack.mitre.org/techniques/T1059/"
+        }
+      ],
+      "top_xai_features": [
+        "IAT",
+        "TCP",
+        "HTTPS",
+        "flow_duration",
+        "ack_flag_number",
+        "RSTRatio",
+        "UDP",
+        "Radius",
+        "HTTP",
+        "AVG"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "Mirai-greeth_flood",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1498.001",
+          "technique_name": "Network Denial of Service: Direct Network Flood",
+          "tactic": "Impact",
+          "mapping_status": "contextual",
+          "confidence": "high",
+          "reason": "CIC-IoT-2023 documents GREETH as a Mirai flood attack using packet encapsulation based on the Ethernet header. MITRE T1498.001 covers direct high-volume network floods, including attacks using many protocols.",
+          "qualification": "The ZeroShield flow evidence supports anomaly detection of the flood behavior; ATT&CK attribution is contextual, not a replacement for the detector.",
+          "source": "https://attack.mitre.org/techniques/T1498/001/"
+        }
+      ],
+      "top_xai_features": [
+        "Protocol Type",
+        "PacketDensity",
+        "HTTPS",
+        "ack_flag_number",
+        "RSTRatio",
+        "SYNRatio",
+        "syn_count",
+        "psh_flag_number",
+        "Std",
+        "ACKRatio"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "Mirai-greip_flood",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1498.001",
+          "technique_name": "Network Denial of Service: Direct Network Flood",
+          "tactic": "Impact",
+          "mapping_status": "contextual",
+          "confidence": "high",
+          "reason": "CIC-IoT-2023 documents GREIP as a Mirai flood in which GRE packets carry encapsulated traffic. MITRE T1498.001 covers direct high-volume network flooding against a target.",
+          "qualification": "The ATT&CK mapping is made from the known attack label/behavior plus network-flow evidence; it is not inferred from one feature alone.",
+          "source": "https://attack.mitre.org/techniques/T1498/001/"
+        }
+      ],
+      "top_xai_features": [
+        "Protocol Type",
+        "HTTPS",
+        "ack_flag_number",
+        "PacketDensity",
+        "RSTRatio",
+        "SYNRatio",
+        "syn_count",
+        "psh_flag_number",
+        "Std",
+        "ACKRatio"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "Mirai-udpplain",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1498.001",
+          "technique_name": "Network Denial of Service: Direct Network Flood",
+          "tactic": "Impact",
+          "mapping_status": "contextual",
+          "confidence": "high",
+          "reason": "CIC-IoT-2023 documents UDPPlain as a Mirai attack that floods the target with UDP packets. MITRE T1498.001 explicitly includes UDP as a common protocol for direct flood attacks.",
+          "qualification": "Treat this as ATT&CK context for a known dataset attack class, not as an independent classification result from Deep SVDD.",
+          "source": "https://attack.mitre.org/techniques/T1498/001/"
+        }
+      ],
+      "top_xai_features": [
+        "PacketDensity",
+        "Radius",
+        "Duration",
+        "Header_Length",
+        "ACKRatio",
+        "urg_count",
+        "SYN_ACK_Ratio",
+        "rst_count",
+        "flow_duration",
+        "Rate"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "SqlInjection",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1190",
+          "technique_name": "Exploit Public-Facing Application",
+          "tactic": "Initial Access",
+          "mapping_status": "contextual",
+          "confidence": "high",
+          "reason": "CIC-IoT-2023 defines SQL Injection as malicious SQL code injected into web-application input. MITRE T1190 explicitly discusses exploiting websites and databases and includes SQL injection in its procedure examples.",
+          "qualification": "Flow-level XAI explains the anomalous network behavior; it does not prove the exact SQL payload or post-exploitation effect.",
+          "source": "https://attack.mitre.org/techniques/T1190/"
+        }
+      ],
+      "top_xai_features": [
+        "Weight",
+        "Number",
+        "flow_duration",
+        "HTTPS",
+        "TCP",
+        "IAT",
+        "UDP",
+        "RSTRatio",
+        "Std",
+        "AVG"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "Uploading_Attack",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1190",
+          "technique_name": "Exploit Public-Facing Application",
+          "tactic": "Initial Access",
+          "mapping_status": "contextual",
+          "confidence": "high",
+          "reason": "CIC-IoT-2023 describes Uploading Attack as exploiting a web application's file-upload functionality to upload malicious files and potentially execute arbitrary code. That is consistent with exploitation of a web-facing application.",
+          "qualification": "Report T1190 as the exploitation context. Exact application vulnerability and post-upload execution require application/host evidence.",
+          "source": "https://attack.mitre.org/techniques/T1190/"
+        },
+        {
+          "technique_id": "T1105",
+          "technique_name": "Ingress Tool Transfer",
+          "tactic": "Command and Control",
+          "mapping_status": "candidate",
+          "confidence": "medium",
+          "reason": "The dataset describes malicious-file upload into the target environment. MITRE T1105 covers transfer of tools or files from an external system into a compromised environment.",
+          "qualification": "Keep this as secondary context unless the observed workflow clearly shows a malicious file being transferred into an already-compromised environment.",
+          "source": "https://attack.mitre.org/techniques/T1105/"
+        }
+      ],
+      "top_xai_features": [
+        "HTTP",
+        "ack_flag_number",
+        "rst_count",
+        "Std",
+        "TCP",
+        "syn_count",
+        "AVG",
+        "flow_duration",
+        "UDP",
+        "ack_count"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    },
+    {
+      "attack_class": "XSS",
+      "allowed_mitre_candidates": [
+        {
+          "technique_id": "T1189",
+          "technique_name": "Drive-by Compromise",
+          "tactic": "Initial Access",
+          "mapping_status": "contextual",
+          "confidence": "medium",
+          "reason": "CIC-IoT-2023 defines XSS as injecting malicious script into a web page for execution by a browser. MITRE T1189 explicitly lists cross-site scripting as a way malicious scripts or iFrames may be inserted into a compromised website.",
+          "qualification": "Because the ZeroShield inputs are flow-level, do not claim browser execution unless browser/client telemetry confirms the follow-on behavior.",
+          "source": "https://attack.mitre.org/techniques/T1189/"
+        }
+      ],
+      "top_xai_features": [
+        "AVG",
+        "flow_duration",
+        "rst_count",
+        "TCP",
+        "Radius",
+        "Header_Length",
+        "Std",
+        "ack_count",
+        "SYNRatio",
+        "syn_count"
+      ],
+      "important_rule": "Use only the candidates below. Do not create a new ATT&CK ID. A conditional/candidate mapping requires the listed qualification evidence."
+    }
+  ],
+  "xai_input": "/mnt/data/mitre_demo/Deep_SVDD_XAI_category_summary.csv",
+  "xai_input_found": true
+}

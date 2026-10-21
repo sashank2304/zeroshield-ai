@@ -1,0 +1,3 @@
+# Stage 7 replay summary
+
+This is a ten-row cached demo experiment, not a representative evaluation. Five attack categories trained LinUCB; the benign cache row and four attack categories were held out. All policies used the identical held-out stream and reward table. See `policy_comparison_metrics.json` and the action ledger. The reward values are designed simulation trade-offs, not real-world costs or optimality. This response policy does not change or improve Deep SVDD detection accuracy. No statistical significance is claimed. Asset criticality and analyst history were unavailable and not fabricated. A CONFIRM_TO_ACT in the training simulator is assumed approved to permit outcome/reward observation; live alerts remain pending actual analyst approval.

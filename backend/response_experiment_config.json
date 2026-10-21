@@ -1,0 +1,18 @@
+{
+  "experiment": "ZeroShield response policy Stage 7",
+  "status": "implementation-ready; dataset replay not yet run",
+  "seed": 20261020,
+  "algorithm": "LinUCB",
+  "alpha": 0.25,
+  "policy_version": "linucb-v1",
+  "reward_version": "designed-simulation-v1",
+  "context_schema_version": "context-v1",
+  "context_features": ["intercept", "normalized_score", "detected", "verification_confidence", "xai_feature_fraction", "leading_xai_magnitude", "mitre_context_present"],
+  "actions": ["AUTO_REMEDIATE", "CONFIRM_TO_ACT", "HUMAN_REVIEW", "MONITOR_ONLY"],
+  "baselines": ["deterministic fixed rule", "always HUMAN_REVIEW", "seeded random"],
+  "alert_source": "backend/data/demo_samples.json, one cached sample per category",
+  "split_limitation": "Only ten cached rows; this is insufficient for a meaningful train/evaluation split or stable baseline comparison.",
+  "synthetic_asset_criticality": false,
+  "synthetic_analyst_history": false,
+  "real_world_optimality_claim": false
+}

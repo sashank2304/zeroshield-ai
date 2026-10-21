@@ -1,0 +1,8 @@
+Backend automated tests: 16 passed (10 Stage 7 policy/reward/context tests; 6 Stage 4/5/6 adapter tests).
+Python compile check: passed for backend API, bandit/replay/retrieval/verification modules and tests.
+Stage 6 teammate verifier: ALL TESTS PASSED (real report VERIFIED; 21 damaged reports caught).
+Frontend production build: passed (Vite reports the JavaScript bundle exceeds its 500 kB advisory threshold).
+End-to-end benign sample: score 0.023274138569831848 < frozen threshold 0.06141921002417763; behavior retrieval 5 candidates; verification VERIFIED confidence 1.0; selected CONFIRM_TO_ACT; auto-remediation safety mask active.
+End-to-end Mirai sample: score 2.0801961421966553 >= frozen threshold 0.06141921002417763; behavior retrieval 5 candidates; verification VERIFIED confidence 1.0; selected AUTO_REMEDIATE (simulation only).
+Feedback update: simulated attack outcome yielded reward +5 and policy version linucb-v1+1.
+Replay API: completed, exit code 0; four policy comparison rows and both SVG plots returned HTTP 200.

@@ -1,0 +1,113 @@
+{
+  "project": "ZeroShield AI",
+  "sample_index": 0,
+  "dataset_label": "Mirai-greeth_flood",
+  "binary_label": 1,
+  "anomaly_score": 0.021153250709176,
+  "threshold": 0.06141921,
+  "predicted_anomaly": false,
+  "threshold_verified_for_checkpoint": false,
+  "xai_method_note": "Contribution is the original anomaly score minus the score after replacing one standardized feature with zero. A positive contribution means that replacement reduced the score. This is local perturbation evidence, not proof of causation.",
+  "feature_evidence": [
+    {
+      "feature": "Protocol Type",
+      "original_value": 17.485763549804688,
+      "perturbed_score": 0.0017732577398419,
+      "contribution": 0.0193799929693341
+    },
+    {
+      "feature": "ack_flag_number",
+      "original_value": -2.360825777053833,
+      "perturbed_score": 0.0123763140290975,
+      "contribution": 0.0087769366800785
+    },
+    {
+      "feature": "TCP",
+      "original_value": -2.4788002967834477,
+      "perturbed_score": 0.013858581893146,
+      "contribution": 0.00729466881603
+    },
+    {
+      "feature": "Header_Length",
+      "original_value": -0.7611986398696899,
+      "perturbed_score": 0.016941288486123,
+      "contribution": 0.0042119622230529
+    },
+    {
+      "feature": "psh_flag_number",
+      "original_value": -0.134757250547409,
+      "perturbed_score": 0.0187055263668298,
+      "contribution": 0.0024477243423461
+    },
+    {
+      "feature": "SYNRatio",
+      "original_value": -0.8814348578453064,
+      "perturbed_score": 0.0191672518849372,
+      "contribution": 0.0019859988242387
+    },
+    {
+      "feature": "HTTP",
+      "original_value": -0.2001593261957168,
+      "perturbed_score": 0.0197125039994716,
+      "contribution": 0.0014407467097043
+    },
+    {
+      "feature": "UDP",
+      "original_value": -0.2703517377376556,
+      "perturbed_score": 0.0201520454138517,
+      "contribution": 0.0010012052953243
+    },
+    {
+      "feature": "urg_count",
+      "original_value": -0.7044942378997803,
+      "perturbed_score": 0.0204987693578004,
+      "contribution": 0.0006544813513755
+    },
+    {
+      "feature": "RSTRatio",
+      "original_value": -0.7468130588531494,
+      "perturbed_score": 0.0206090528517961,
+      "contribution": 0.0005441978573799
+    }
+  ],
+  "mitre_retrieval_method": "TF-IDF similarity",
+  "mitre_candidates": [
+    {
+      "rank": 1,
+      "id": "T1498.001",
+      "name": "Direct Network Flood",
+      "similarity": 0.365956,
+      "url": "https://attack.mitre.org/techniques/T1498/001"
+    },
+    {
+      "rank": 2,
+      "id": "T1499",
+      "name": "Endpoint Denial of Service",
+      "similarity": 0.163066,
+      "url": "https://attack.mitre.org/techniques/T1499"
+    },
+    {
+      "rank": 3,
+      "id": "T1498.002",
+      "name": "Reflection Amplification",
+      "similarity": 0.136123,
+      "url": "https://attack.mitre.org/techniques/T1498/002"
+    },
+    {
+      "rank": 4,
+      "id": "T1110.001",
+      "name": "Password Guessing",
+      "similarity": 0.132707,
+      "url": "https://attack.mitre.org/techniques/T1110/001"
+    },
+    {
+      "rank": 5,
+      "id": "T1584.005",
+      "name": "Botnet",
+      "similarity": 0.124071,
+      "url": "https://attack.mitre.org/techniques/T1584/005"
+    }
+  ],
+  "mitre_confirmation": false,
+  "analyst_caveat": "MITRE candidates are retrieval suggestions, not confirmed attack classifications. The dataset label and detector prediction must be reported separately."
+}

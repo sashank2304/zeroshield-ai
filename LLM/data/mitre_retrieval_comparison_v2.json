@@ -1,0 +1,165 @@
+{
+  "note": "TF-IDF similarity is text similarity, not attack probability. Queries do not include the ground-truth dataset label. Rankings require human review before use in SOC reports.",
+  "results": {
+    "direct_flooding_baseline": {
+      "query": "network traffic flooding high volume packets denial of service UDP TCP",
+      "top_5": [
+        {
+          "rank": 1,
+          "id": "T1498.001",
+          "name": "Direct Network Flood",
+          "similarity": 0.322937,
+          "url": "https://attack.mitre.org/techniques/T1498/001"
+        },
+        {
+          "rank": 2,
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "similarity": 0.19124,
+          "url": "https://attack.mitre.org/techniques/T1110/001"
+        },
+        {
+          "rank": 3,
+          "id": "T1110.004",
+          "name": "Credential Stuffing",
+          "similarity": 0.180122,
+          "url": "https://attack.mitre.org/techniques/T1110/004"
+        },
+        {
+          "rank": 4,
+          "id": "T1499.001",
+          "name": "OS Exhaustion Flood",
+          "similarity": 0.166925,
+          "url": "https://attack.mitre.org/techniques/T1499/001"
+        },
+        {
+          "rank": 5,
+          "id": "T1499",
+          "name": "Endpoint Denial of Service",
+          "similarity": 0.166516,
+          "url": "https://attack.mitre.org/techniques/T1499"
+        }
+      ]
+    },
+    "behavior_focused": {
+      "query": "adversary sends high volume network packets toward a target to cause denial of service; network flooding using UDP ICMP or TCP; botnet traffic and reduced network availability",
+      "top_5": [
+        {
+          "rank": 1,
+          "id": "T1498.001",
+          "name": "Direct Network Flood",
+          "similarity": 0.365956,
+          "url": "https://attack.mitre.org/techniques/T1498/001"
+        },
+        {
+          "rank": 2,
+          "id": "T1499",
+          "name": "Endpoint Denial of Service",
+          "similarity": 0.163066,
+          "url": "https://attack.mitre.org/techniques/T1499"
+        },
+        {
+          "rank": 3,
+          "id": "T1498.002",
+          "name": "Reflection Amplification",
+          "similarity": 0.136123,
+          "url": "https://attack.mitre.org/techniques/T1498/002"
+        },
+        {
+          "rank": 4,
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "similarity": 0.132707,
+          "url": "https://attack.mitre.org/techniques/T1110/001"
+        },
+        {
+          "rank": 5,
+          "id": "T1584.005",
+          "name": "Botnet",
+          "similarity": 0.124071,
+          "url": "https://attack.mitre.org/techniques/T1584/005"
+        }
+      ]
+    },
+    "protocol_feature_focused": {
+      "query": "network protocol characteristics TCP UDP packet header flags SYN ACK FIN RST connection behavior",
+      "top_5": [
+        {
+          "rank": 1,
+          "id": "T1499.001",
+          "name": "OS Exhaustion Flood",
+          "similarity": 0.233826,
+          "url": "https://attack.mitre.org/techniques/T1499/001"
+        },
+        {
+          "rank": 2,
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "similarity": 0.184117,
+          "url": "https://attack.mitre.org/techniques/T1110/001"
+        },
+        {
+          "rank": 3,
+          "id": "T1110.004",
+          "name": "Credential Stuffing",
+          "similarity": 0.152647,
+          "url": "https://attack.mitre.org/techniques/T1110/004"
+        },
+        {
+          "rank": 4,
+          "id": "T1110.003",
+          "name": "Password Spraying",
+          "similarity": 0.139055,
+          "url": "https://attack.mitre.org/techniques/T1110/003"
+        },
+        {
+          "rank": 5,
+          "id": "T1095",
+          "name": "Non-Application Layer Protocol",
+          "similarity": 0.088953,
+          "url": "https://attack.mitre.org/techniques/T1095"
+        }
+      ]
+    },
+    "existing_xai_query": {
+      "query": "MITRE ATT&CK techniques related to network protocol characteristics, packet header features, network traffic behavior, TCP SYN flag and connection characteristics, TCP ACK flag characteristics, TCP UDP and network protocol features",
+      "top_5": [
+        {
+          "rank": 1,
+          "id": "T1110.001",
+          "name": "Password Guessing",
+          "similarity": 0.253371,
+          "url": "https://attack.mitre.org/techniques/T1110/001"
+        },
+        {
+          "rank": 2,
+          "id": "T1110.004",
+          "name": "Credential Stuffing",
+          "similarity": 0.249777,
+          "url": "https://attack.mitre.org/techniques/T1110/004"
+        },
+        {
+          "rank": 3,
+          "id": "T1110.003",
+          "name": "Password Spraying",
+          "similarity": 0.221726,
+          "url": "https://attack.mitre.org/techniques/T1110/003"
+        },
+        {
+          "rank": 4,
+          "id": "T1499.001",
+          "name": "OS Exhaustion Flood",
+          "similarity": 0.211194,
+          "url": "https://attack.mitre.org/techniques/T1499/001"
+        },
+        {
+          "rank": 5,
+          "id": "T1040",
+          "name": "Network Sniffing",
+          "similarity": 0.102611,
+          "url": "https://attack.mitre.org/techniques/T1040"
+        }
+      ]
+    }
+  }
+}

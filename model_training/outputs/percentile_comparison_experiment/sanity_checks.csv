@@ -1,0 +1,31 @@
+Model,Percentile,positive_sum_ok,negative_sum_ok,total_sum_ok,metrics_recomputed_ok,zero_day_sum_ok
+AE,90,True,True,True,True,True
+AE,93,True,True,True,True,True
+AE,95,True,True,True,True,True
+AE,97,True,True,True,True,True
+AE,99,True,True,True,True,True
+CAE,90,True,True,True,True,True
+CAE,93,True,True,True,True,True
+CAE,95,True,True,True,True,True
+CAE,97,True,True,True,True,True
+CAE,99,True,True,True,True,True
+DAE,90,True,True,True,True,True
+DAE,93,True,True,True,True,True
+DAE,95,True,True,True,True,True
+DAE,97,True,True,True,True,True
+DAE,99,True,True,True,True,True
+Deep SVDD,90,True,True,True,True,True
+Deep SVDD,93,True,True,True,True,True
+Deep SVDD,95,True,True,True,True,True
+Deep SVDD,97,True,True,True,True,True
+Deep SVDD,99,True,True,True,True,True
+OCSVM,90,True,True,True,True,True
+OCSVM,93,True,True,True,True,True
+OCSVM,95,True,True,True,True,True
+OCSVM,97,True,True,True,True,True
+OCSVM,99,True,True,True,True,True
+VAE,90,True,True,True,True,True
+VAE,93,True,True,True,True,True
+VAE,95,True,True,True,True,True
+VAE,97,True,True,True,True,True
+VAE,99,True,True,True,True,True

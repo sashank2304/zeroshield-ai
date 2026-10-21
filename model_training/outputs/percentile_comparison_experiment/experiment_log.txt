@@ -1,0 +1,366 @@
+Start time (UTC): 2026-10-04T11:43:48.771010+00:00
+Project root:  .
+Training source: ./train_benign_only.csv (644,404,448 bytes)
+Validation source: ./validation_set.csv (22,992,531,456 bytes)
+Zero-day source: ./zero_day_test_scaled_v2.csv (2,051,913,808 bytes)
+Features (43 ordered): ['flow_duration', 'Header_Length', 'Protocol Type', 'Duration', 'Rate', 'Drate', 'fin_flag_number', 'syn_flag_number', 'rst_flag_number', 'psh_flag_number', 'ack_flag_number', 'ece_flag_number', 'cwr_flag_number', 'ack_count', 'syn_count', 'fin_count', 'urg_count', 'rst_count', 'HTTP', 'HTTPS', 'DNS', 'Telnet', 'SMTP', 'SSH', 'IRC', 'TCP', 'UDP', 'DHCP', 'ARP', 'ICMP', 'IPv', 'AVG', 'Std', 'IAT', 'Number', 'Radius', 'Weight', 'SYNRatio', 'ACKRatio', 'RSTRatio', 'FINRatio', 'SYN_ACK_Ratio', 'PacketDensity']
+Environment: Python 3.13.4, torch 2.14.0+cpu, sklearn 1.8.0, pandas 3.0.2, NumPy 2.1.3
+Device: cpu; CPU: AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD; logical CPUs: 12
+Training-source scan: 100,000 benign rows read
+Training-source scan: 200,000 benign rows read
+Training-source scan: 300,000 benign rows read
+Training-source scan: 400,000 benign rows read
+Training-source scan: 500,000 benign rows read
+Training-source scan: 600,000 benign rows read
+Training-source scan: 700,000 benign rows read
+Training-source scan: 800,000 benign rows read
+Training-source scan: 878,328 benign rows read
+Selected disjoint benign rows: 500,000 training; 100,000 threshold-reference
+
+=== Training Autoencoder ===
+Autoencoder: streamed validation_set.csv: 50,000 rows
+Autoencoder: streamed validation_set.csv: 1,000,000 rows
+Autoencoder: streamed validation_set.csv: 2,000,000 rows
+Autoencoder: streamed validation_set.csv: 3,000,000 rows
+Autoencoder: streamed validation_set.csv: 4,000,000 rows
+Autoencoder: streamed validation_set.csv: 5,000,000 rows
+Autoencoder: streamed validation_set.csv: 6,000,000 rows
+Autoencoder: streamed validation_set.csv: 7,000,000 rows
+Autoencoder: streamed validation_set.csv: 8,000,000 rows
+Autoencoder: streamed validation_set.csv: 9,000,000 rows
+Autoencoder: streamed validation_set.csv: 10,000,000 rows
+Autoencoder: streamed validation_set.csv: 11,000,000 rows
+Autoencoder: streamed validation_set.csv: 12,000,000 rows
+Autoencoder: streamed validation_set.csv: 13,000,000 rows
+Autoencoder: streamed validation_set.csv: 14,000,000 rows
+Autoencoder: streamed validation_set.csv: 15,000,000 rows
+Autoencoder: streamed validation_set.csv: 16,000,000 rows
+Autoencoder: streamed validation_set.csv: 17,000,000 rows
+Autoencoder: streamed validation_set.csv: 18,000,000 rows
+Autoencoder: streamed validation_set.csv: 19,000,000 rows
+Autoencoder: streamed validation_set.csv: 20,000,000 rows
+Autoencoder: streamed validation_set.csv: 21,000,000 rows
+Autoencoder: streamed validation_set.csv: 22,000,000 rows
+Autoencoder: streamed validation_set.csv: 23,000,000 rows
+Autoencoder: streamed validation_set.csv: 24,000,000 rows
+Autoencoder: streamed validation_set.csv: 25,000,000 rows
+Autoencoder: streamed validation_set.csv: 26,000,000 rows
+Autoencoder: streamed validation_set.csv: 27,000,000 rows
+Autoencoder: streamed validation_set.csv: 28,000,000 rows
+Autoencoder: streamed validation_set.csv: 29,000,000 rows
+Autoencoder: streamed validation_set.csv: 30,000,000 rows
+Autoencoder: streamed validation_set.csv: 31,000,000 rows
+Autoencoder: streamed zero_day_test_scaled_v2.csv: 50,000 rows
+Autoencoder: streamed zero_day_test_scaled_v2.csv: 1,000,000 rows
+Autoencoder: streamed zero_day_test_scaled_v2.csv: 2,000,000 rows
+Completed Autoencoder; elapsed 61.71s; thresholds [0.051835076138377206, 0.07119970418512822, 0.09189649634063204, 0.12446463778614994, 0.2304471622407428]
+
+=== Training Variational Autoencoder ===
+Variational Autoencoder: streamed validation_set.csv: 50,000 rows
+Variational Autoencoder: streamed validation_set.csv: 1,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 2,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 3,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 4,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 5,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 6,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 7,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 8,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 9,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 10,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 11,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 12,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 13,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 14,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 15,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 16,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 17,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 18,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 19,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 20,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 21,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 22,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 23,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 24,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 25,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 26,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 27,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 28,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 29,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 30,000,000 rows
+Variational Autoencoder: streamed validation_set.csv: 31,000,000 rows
+Variational Autoencoder: streamed zero_day_test_scaled_v2.csv: 50,000 rows
+Variational Autoencoder: streamed zero_day_test_scaled_v2.csv: 1,000,000 rows
+Variational Autoencoder: streamed zero_day_test_scaled_v2.csv: 2,000,000 rows
+Completed Variational Autoencoder; elapsed 30.54s; thresholds [0.068680676817894, 0.08813008248806005, 0.1077687513083219, 0.13850185573101037, 0.23119309201836577]
+
+=== Training Denoising Autoencoder ===
+Denoising Autoencoder: streamed validation_set.csv: 50,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 1,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 2,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 3,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 4,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 5,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 6,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 7,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 8,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 9,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 10,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 11,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 12,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 13,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 14,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 15,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 16,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 17,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 18,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 19,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 20,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 21,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 22,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 23,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 24,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 25,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 26,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 27,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 28,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 29,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 30,000,000 rows
+Denoising Autoencoder: streamed validation_set.csv: 31,000,000 rows
+Denoising Autoencoder: streamed zero_day_test_scaled_v2.csv: 50,000 rows
+Denoising Autoencoder: streamed zero_day_test_scaled_v2.csv: 1,000,000 rows
+Denoising Autoencoder: streamed zero_day_test_scaled_v2.csv: 2,000,000 rows
+Completed Denoising Autoencoder; elapsed 28.62s; thresholds [0.04051307886838913, 0.0529714296758175, 0.06991801150143143, 0.09969375275075433, 0.16882549479603734]
+
+=== Training Contractive Autoencoder ===
+Contractive Autoencoder: streamed validation_set.csv: 50,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 1,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 2,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 3,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 4,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 5,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 6,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 7,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 8,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 9,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 10,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 11,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 12,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 13,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 14,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 15,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 16,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 17,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 18,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 19,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 20,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 21,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 22,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 23,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 24,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 25,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 26,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 27,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 28,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 29,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 30,000,000 rows
+Contractive Autoencoder: streamed validation_set.csv: 31,000,000 rows
+Contractive Autoencoder: streamed zero_day_test_scaled_v2.csv: 50,000 rows
+Contractive Autoencoder: streamed zero_day_test_scaled_v2.csv: 1,000,000 rows
+Contractive Autoencoder: streamed zero_day_test_scaled_v2.csv: 2,000,000 rows
+Completed Contractive Autoencoder; elapsed 26.37s; thresholds [0.023814403265714646, 0.032368949949741474, 0.0456039376556873, 0.07715456239879126, 0.13896989896893477]
+
+=== Training Deep SVDD ===
+Deep SVDD: streamed validation_set.csv: 50,000 rows
+Deep SVDD: streamed validation_set.csv: 1,000,000 rows
+Deep SVDD: streamed validation_set.csv: 2,000,000 rows
+Deep SVDD: streamed validation_set.csv: 3,000,000 rows
+Deep SVDD: streamed validation_set.csv: 4,000,000 rows
+Deep SVDD: streamed validation_set.csv: 5,000,000 rows
+Deep SVDD: streamed validation_set.csv: 6,000,000 rows
+Deep SVDD: streamed validation_set.csv: 7,000,000 rows
+Deep SVDD: streamed validation_set.csv: 8,000,000 rows
+Deep SVDD: streamed validation_set.csv: 9,000,000 rows
+Deep SVDD: streamed validation_set.csv: 10,000,000 rows
+Deep SVDD: streamed validation_set.csv: 11,000,000 rows
+Deep SVDD: streamed validation_set.csv: 12,000,000 rows
+Deep SVDD: streamed validation_set.csv: 13,000,000 rows
+Deep SVDD: streamed validation_set.csv: 14,000,000 rows
+Deep SVDD: streamed validation_set.csv: 15,000,000 rows
+Deep SVDD: streamed validation_set.csv: 16,000,000 rows
+Deep SVDD: streamed validation_set.csv: 17,000,000 rows
+Deep SVDD: streamed validation_set.csv: 18,000,000 rows
+Deep SVDD: streamed validation_set.csv: 19,000,000 rows
+Deep SVDD: streamed validation_set.csv: 20,000,000 rows
+Deep SVDD: streamed validation_set.csv: 21,000,000 rows
+Deep SVDD: streamed validation_set.csv: 22,000,000 rows
+Deep SVDD: streamed validation_set.csv: 23,000,000 rows
+Deep SVDD: streamed validation_set.csv: 24,000,000 rows
+Deep SVDD: streamed validation_set.csv: 25,000,000 rows
+Deep SVDD: streamed validation_set.csv: 26,000,000 rows
+Deep SVDD: streamed validation_set.csv: 27,000,000 rows
+Deep SVDD: streamed validation_set.csv: 28,000,000 rows
+Deep SVDD: streamed validation_set.csv: 29,000,000 rows
+Deep SVDD: streamed validation_set.csv: 30,000,000 rows
+Deep SVDD: streamed validation_set.csv: 31,000,000 rows
+Deep SVDD: streamed zero_day_test_scaled_v2.csv: 50,000 rows
+Deep SVDD: streamed zero_day_test_scaled_v2.csv: 1,000,000 rows
+Deep SVDD: streamed zero_day_test_scaled_v2.csv: 2,000,000 rows
+Completed Deep SVDD; elapsed 26.19s; thresholds [2.086572403641185e-05, 3.0050146615394672e-05, 4.199612867523668e-05, 6.580939181731082e-05, 0.00017014507218846115]
+
+=== Training One-Class SVM ===
+One-Class SVM: streamed validation_set.csv: 50,000 rows
+One-Class SVM: streamed validation_set.csv: 1,000,000 rows
+One-Class SVM: streamed validation_set.csv: 2,000,000 rows
+One-Class SVM: streamed validation_set.csv: 3,000,000 rows
+One-Class SVM: streamed validation_set.csv: 4,000,000 rows
+One-Class SVM: streamed validation_set.csv: 5,000,000 rows
+One-Class SVM: streamed validation_set.csv: 6,000,000 rows
+One-Class SVM: streamed validation_set.csv: 7,000,000 rows
+One-Class SVM: streamed validation_set.csv: 8,000,000 rows
+One-Class SVM: streamed validation_set.csv: 9,000,000 rows
+One-Class SVM: streamed validation_set.csv: 10,000,000 rows
+One-Class SVM: streamed validation_set.csv: 11,000,000 rows
+One-Class SVM: streamed validation_set.csv: 12,000,000 rows
+One-Class SVM: streamed validation_set.csv: 13,000,000 rows
+One-Class SVM: streamed validation_set.csv: 14,000,000 rows
+One-Class SVM: streamed validation_set.csv: 15,000,000 rows
+One-Class SVM: streamed validation_set.csv: 16,000,000 rows
+One-Class SVM: streamed validation_set.csv: 17,000,000 rows
+One-Class SVM: streamed validation_set.csv: 18,000,000 rows
+One-Class SVM: streamed validation_set.csv: 19,000,000 rows
+One-Class SVM: streamed validation_set.csv: 20,000,000 rows
+One-Class SVM: streamed validation_set.csv: 21,000,000 rows
+One-Class SVM: streamed validation_set.csv: 22,000,000 rows
+One-Class SVM: streamed validation_set.csv: 23,000,000 rows
+One-Class SVM: streamed validation_set.csv: 24,000,000 rows
+One-Class SVM: streamed validation_set.csv: 25,000,000 rows
+One-Class SVM: streamed validation_set.csv: 26,000,000 rows
+One-Class SVM: streamed validation_set.csv: 27,000,000 rows
+One-Class SVM: streamed validation_set.csv: 28,000,000 rows
+One-Class SVM: streamed validation_set.csv: 29,000,000 rows
+One-Class SVM: streamed validation_set.csv: 30,000,000 rows
+One-Class SVM: streamed validation_set.csv: 31,000,000 rows
+One-Class SVM: streamed zero_day_test_scaled_v2.csv: 50,000 rows
+One-Class SVM: streamed zero_day_test_scaled_v2.csv: 1,000,000 rows
+One-Class SVM: streamed zero_day_test_scaled_v2.csv: 2,000,000 rows
+Completed One-Class SVM; elapsed 0.42s; thresholds [-2.618773100745223, -1.2730831265570517, 0.09812517519171066, 3.356578888543926, 13.864610357406127]
+Numerical checks passed for all 30 model-percentile combinations.
+Category rows: 270; categories: ['Backdoor_Malware', 'BrowserHijacking', 'CommandInjection', 'Mirai-greeth_flood', 'Mirai-greip_flood', 'Mirai-udpplain', 'SqlInjection', 'Uploading_Attack', 'XSS']
+Finished UTC: 2026-10-04T12:44:35.936657+00:00
+
+Model training records:
+[
+  {
+    "model": "AE",
+    "label": "Autoencoder",
+    "training_time_seconds": 61.70760710000013,
+    "training_loss": 0.03618919267794307,
+    "training_rows": 500000,
+    "reference_rows": 100000,
+    "checkpoint": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project\\model_training\\outputs\\percentile_comparison_experiment\\models\\AE.pt",
+    "thresholds": {
+      "90": 0.051835076138377206,
+      "93": 0.07119970418512822,
+      "95": 0.09189649634063204,
+      "97": 0.12446463778614994,
+      "99": 0.2304471622407428
+    }
+  },
+  {
+    "model": "VAE",
+    "label": "Variational Autoencoder",
+    "training_time_seconds": 30.53799960000015,
+    "training_loss": 0.09678002630873603,
+    "training_rows": 500000,
+    "reference_rows": 100000,
+    "checkpoint": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project\\model_training\\outputs\\percentile_comparison_experiment\\models\\VAE.pt",
+    "thresholds": {
+      "90": 0.068680676817894,
+      "93": 0.08813008248806005,
+      "95": 0.1077687513083219,
+      "97": 0.13850185573101037,
+      "99": 0.23119309201836577
+    }
+  },
+  {
+    "model": "DAE",
+    "label": "Denoising Autoencoder",
+    "training_time_seconds": 28.620860999999422,
+    "training_loss": 0.040523513649799385,
+    "training_rows": 500000,
+    "reference_rows": 100000,
+    "checkpoint": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project\\model_training\\outputs\\percentile_comparison_experiment\\models\\DAE.pt",
+    "thresholds": {
+      "90": 0.04051307886838913,
+      "93": 0.0529714296758175,
+      "95": 0.06991801150143143,
+      "97": 0.09969375275075433,
+      "99": 0.16882549479603734
+    }
+  },
+  {
+    "model": "CAE",
+    "label": "Contractive Autoencoder",
+    "training_time_seconds": 26.369088000000374,
+    "training_loss": 0.09834891141829442,
+    "training_rows": 500000,
+    "reference_rows": 100000,
+    "checkpoint": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project\\model_training\\outputs\\percentile_comparison_experiment\\models\\CAE.pt",
+    "thresholds": {
+      "90": 0.023814403265714646,
+      "93": 0.032368949949741474,
+      "95": 0.0456039376556873,
+      "97": 0.07715456239879126,
+      "99": 0.13896989896893477
+    }
+  },
+  {
+    "model": "Deep SVDD",
+    "label": "Deep SVDD",
+    "training_time_seconds": 26.193945400000302,
+    "training_loss": 2.1132839861003995e-05,
+    "training_rows": 500000,
+    "reference_rows": 100000,
+    "checkpoint": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project\\model_training\\outputs\\percentile_comparison_experiment\\models\\Deep_SVDD.pt",
+    "thresholds": {
+      "90": 2.086572403641185e-05,
+      "93": 3.0050146615394672e-05,
+      "95": 4.199612867523668e-05,
+      "97": 6.580939181731082e-05,
+      "99": 0.00017014507218846115
+    }
+  },
+  {
+    "model": "OCSVM",
+    "label": "One-Class SVM",
+    "training_time_seconds": 0.4164913999993587,
+    "training_loss": null,
+    "training_rows": 10000,
+    "reference_rows": 100000,
+    "checkpoint": "C:\\Users\\sasha_8bqmxgj\\OneDrive\\Documents\\Study Material\\7th Sem\\Final Year Project\\model_training\\outputs\\percentile_comparison_experiment\\models\\One_Class_SVM.joblib",
+    "thresholds": {
+      "90": -2.618773100745223,
+      "93": -1.2730831265570517,
+      "95": 0.09812517519171066,
+      "97": 3.356578888543926,
+      "99": 13.864610357406127
+    }
+  }
+]
+
+Warnings:
+[]
+
+End time (UTC): 2026-10-04T12:46:56.475164+00:00
+Elapsed wall time (seconds): 3787.7
+Warnings observed:
+- PyTorch emitted a read-only NumPy view warning during existing inference scoring; the view was read-only in use. The runner was later updated to create writable contiguous sample arrays for future reproductions.
+- scikit-learn warned that OCSVM was fitted with an unnamed NumPy array and scored on named DataFrame chunks. The same 43 features in the saved order were supplied. The runner was later updated to use NumPy arrays for OCSVM scoring.
+- VAE training loss rose to 16.731732 at epoch 4 and returned to 0.096780 at epoch 8. Training and evaluation completed.
+Assumptions:
+- Training and reference observations are a seeded row-level random split of the existing benign-only prepared dataset.
+- The prepared files are treated as already StandardScaler-transformed; the fitted scaler and raw-data transformation procedure were not present in the repository.
+Corrections/implementation notes:
+- Threshold calibration is independent of model fitting: 100,000 benign rows were reserved outside the 500,000 training rows.
+- Post-run runner edits remove OCSVM feature-name warnings and ensure writable contiguous sample arrays for future reproductions; they do not alter the completed model files or results.
+Skipped evaluation rows: 0 (confirmed by count invariants).

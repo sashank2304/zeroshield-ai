@@ -1,0 +1,9 @@
+
+{
+  "alert_id": "DEMO-WEAK-001",
+  "detector_status": "anomaly",
+  "anomaly_score": 0.08,
+  "threshold": 0.06141921,
+  "top_features": [],
+  "traffic_indicators": {}
+}

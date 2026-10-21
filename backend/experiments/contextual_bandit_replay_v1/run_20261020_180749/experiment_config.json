@@ -1,0 +1,42 @@
+{
+  "seed": 20261020,
+  "algorithm": "LinUCB",
+  "alpha": 0.25,
+  "reward_version": "designed-simulation-v1",
+  "reward_table": {
+    "attack": {
+      "AUTO_REMEDIATE": 5,
+      "CONFIRM_TO_ACT": 3,
+      "HUMAN_REVIEW": 2,
+      "MONITOR_ONLY": -6
+    },
+    "benign": {
+      "AUTO_REMEDIATE": -12,
+      "CONFIRM_TO_ACT": -2,
+      "HUMAN_REVIEW": -2,
+      "MONITOR_ONLY": 1
+    }
+  },
+  "context_schema": {
+    "version": "context-v1",
+    "features": [
+      "intercept",
+      "normalized_score",
+      "detected",
+      "verification_confidence",
+      "xai_feature_fraction",
+      "leading_xai_magnitude",
+      "mitre_context_present"
+    ]
+  },
+  "baseline_definitions": {
+    "fixed": "VERIFIED + detected + confidence>=0.9 -> AUTO_REMEDIATE; else detected -> HUMAN_REVIEW; else MONITOR_ONLY",
+    "always_human": "HUMAN_REVIEW for every alert",
+    "random": "Python random.Random(seed=20261020), one draw per held-out alert"
+  },
+  "split": "5 attack categories train; BenignTraffic plus 4 attack categories held out",
+  "stream": "ten cached project samples; first 5 non-benign categories train, remaining 4 non-benign plus benign evaluate",
+  "approval_simulator_assumption": "CONFIRM_TO_ACT is assumed approved offline so its reward can be observed; this is not live approval.",
+  "limitations": "Tiny category cache, one benign row, category-level split only; no generalization or statistical significance claim.",
+  "labels_in_context": false
+}

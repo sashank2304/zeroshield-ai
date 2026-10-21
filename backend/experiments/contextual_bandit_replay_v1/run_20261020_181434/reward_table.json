@@ -1,0 +1,22 @@
+{
+  "version": "designed-simulation-v1",
+  "table": {
+    "attack": {
+      "AUTO_REMEDIATE": 5,
+      "CONFIRM_TO_ACT": 3,
+      "HUMAN_REVIEW": 2,
+      "MONITOR_ONLY": -6
+    },
+    "benign": {
+      "AUTO_REMEDIATE": -12,
+      "CONFIRM_TO_ACT": -2,
+      "HUMAN_REVIEW": -2,
+      "MONITOR_ONLY": 1
+    }
+  },
+  "rejected_approval_outcome": {
+    "attack": -6,
+    "benign": -2
+  },
+  "claim": "Designed trade-off only; not real operational cost or optimal policy."
+}

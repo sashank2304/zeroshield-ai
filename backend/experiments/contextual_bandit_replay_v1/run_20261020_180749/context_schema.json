@@ -1,0 +1,13 @@
+{
+  "version": "context-v1",
+  "features": [
+    "intercept",
+    "normalized_score",
+    "detected",
+    "verification_confidence",
+    "xai_feature_fraction",
+    "leading_xai_magnitude",
+    "mitre_context_present"
+  ],
+  "no_labels_or_future_outcomes": true
+}

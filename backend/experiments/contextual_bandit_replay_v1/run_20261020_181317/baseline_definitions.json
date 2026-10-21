@@ -1,0 +1,8 @@
+{
+  "fixed": "VERIFIED + detected + confidence>=0.9 -> AUTO_REMEDIATE; else detected -> HUMAN_REVIEW; else MONITOR_ONLY",
+  "always_human": "HUMAN_REVIEW",
+  "random": {
+    "method": "random.Random(seed).choice(ACTIONS)",
+    "seed": 20261020
+  }
+}

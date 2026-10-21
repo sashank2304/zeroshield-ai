@@ -1,0 +1,52 @@
+{
+  "project": "ZeroShield AI",
+  "model": "llama3.2:3b",
+  "execution": "local_ollama",
+  "api_key_used": false,
+  "generated_at": "2026-10-17T06:34:07.143520+05:30",
+  "dataset_label": "Mirai-greeth_flood",
+  "binary_label": 1,
+  "predicted_anomaly": false,
+  "anomaly_score": 0.021153250709176,
+  "threshold": 0.06141921,
+  "threshold_verified_for_checkpoint": false,
+  "mitre_candidate_count": 5,
+  "mitre_candidates_supplied": [
+    {
+      "rank": 1,
+      "id": "T1498.001",
+      "name": "Direct Network Flood",
+      "similarity": 0.365956,
+      "url": "https://attack.mitre.org/techniques/T1498/001"
+    },
+    {
+      "rank": 2,
+      "id": "T1499",
+      "name": "Endpoint Denial of Service",
+      "similarity": 0.163066,
+      "url": "https://attack.mitre.org/techniques/T1499"
+    },
+    {
+      "rank": 3,
+      "id": "T1498.002",
+      "name": "Reflection Amplification",
+      "similarity": 0.136123,
+      "url": "https://attack.mitre.org/techniques/T1498/002"
+    },
+    {
+      "rank": 4,
+      "id": "T1110.001",
+      "name": "Password Guessing",
+      "similarity": 0.132707,
+      "url": "https://attack.mitre.org/techniques/T1110/001"
+    },
+    {
+      "rank": 5,
+      "id": "T1584.005",
+      "name": "Botnet",
+      "similarity": 0.124071,
+      "url": "https://attack.mitre.org/techniques/T1584/005"
+    }
+  ],
+  "llm_report_markdown": "# ZeroShield AI - LLM-Assisted SOC Report\n## 1. Executive Summary\nA sample from the \"Mirai-greeth_flood\" dataset was analyzed using ZeroShield AI's XAI report. The analysis revealed a low anomaly score of 0.021153250709176, which is below the threshold of 0.06141921. The detector prediction is false.\n\n## 2. Sample and Detector Status\n* Sample Index: 0\n* Dataset Label: Mirai-greeth_flood\n* Binary Label: 1\n* Anomaly Score: 0.021153250709176\n* Threshold: 0.06141921\n* Detector Prediction: False\n\n## 3. Explainable AI Evidence\nThe XAI report provides evidence of local perturbation sensitivity by replacing one standardized feature with zero. The contributions for each feature are:\n* Protocol Type: 0.0193799929693341\n* ack_flag_number: 0.0087769366800785\n* TCP: 0.00729466881603\n* Header_Length: 0.0042119622230529\n* psh_flag_number: 0.0024477243423461\n* SYNRatio: 0.0019859988242387\n* HTTP: 0.0014407467097043\n* UDP: 0.0010012052953243\n* urg_count: 0.0006544813513755\n* RSTRatio: 0.0005441978573799\n\nThese contributions indicate that replacing these features with zero reduces the anomaly score, but does not prove causation.\n\n## 4. MITRE ATT&CK Candidate Mapping\nThe MITRE ATT&CK retrieval method used is TF-IDF similarity. The top 5 MITRE candidates are:\n* T1498.001: Direct Network Flood (similarity: 0.365956)\n* T1499: Endpoint Denial of Service (similarity: 0.163066)\n* T1498.002: Reflection Amplification (similarity: 0.136123)\n* T1110.001: Password Guessing (similarity: 0.132707)\n* T1584.005: Botnet (similarity: 0.124071)\n\nThese candidates are retrieval suggestions, not confirmed attack classifications.\n\n## 5. Recommended Analyst Validation\nFurther validation is required to confirm the attack classification and determine the likelihood of a successful attack.\n\n## 6. Limitations\nThis report is based on the provided XAI report and MITRE ATT&CK retrieval candidates. ZeroShield AI has not inspected live traffic, endpoints, or external systems. The detector threshold is unverified for this checkpoint."
+}
