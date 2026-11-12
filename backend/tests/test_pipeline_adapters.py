@@ -16,9 +16,10 @@ class PipelineAdapterTests(unittest.TestCase):
         service = MitreService(ROOT)
         self.assertIsNotNone(service.index)
         result = service.retrieve_behavior({"anomaly_score": .5, "threshold": .1,
-            "top_features": [{"feature": "SYNRatio", "value": .9, "contribution": .2}]})
-        self.assertIn("SYNRatio", result["query"])
-        self.assertIn("0.9", result["query"])
+            "top_features": [{"feature": "SYNRatio", "value": 3.0, "contribution": .2}]})
+        self.assertIn("SYN", result["query"])                      # behaviour words, not raw feature names/numbers
+        self.assertEqual(result["evidence_features"][0]["feature"], "SYNRatio")
+        self.assertEqual(result["evidence_features"][0]["value"], 3.0)
         for item in result["techniques"]:
             self.assertTrue(item["technique_id"].startswith("T"))
             self.assertTrue(item["technique_name"])
@@ -37,7 +38,7 @@ class PipelineAdapterTests(unittest.TestCase):
             def transform(self, _): return Query()
         service = MitreService(ROOT)
         service.index = {"vectorizer": Vectorizer(), "matrix": Matrix(), "documents": []}
-        result = service.retrieve_behavior({"anomaly_score": 0, "threshold": 1, "top_features": []})
+        result = service.retrieve_behavior({"anomaly_score": 0, "threshold": 1, "top_features": [{"feature": "SYNRatio", "value": 3.0, "contribution": .2}]})
         self.assertEqual(result["status"], "empty_retrieval")
         self.assertEqual(result["techniques"], [])
 

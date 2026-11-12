@@ -8,7 +8,7 @@ The repository does not contain a fitted scaler object or an API transform from 
 
 ## Explanation and context
 
-For each input, the backend replaces one feature value with zero in prepared space and recomputes the score. The difference between original and perturbed score is reported as feature sensitivity. It is not a causal attribution. MITRE retrieval builds text from observed top features, their values and contribution directions, and score/threshold; TF-IDF returns ranked candidates. The category mapping file is a separate human-curated contextual source and must not be treated as model prediction.
+For each input, the backend replaces one feature value with zero in prepared space and recomputes the score. The difference between original and perturbed score is reported as feature sensitivity. It is not a causal attribution. MITRE retrieval translates the top features that push the score up and sit clearly outside the benign range into plain-language behaviour (a hand-written feature-to-behaviour map), then TF-IDF returns candidates restricted to network-observable tactics above a similarity floor, or abstains. On held-out labelled evidence it finds a relevant technique for network floods but not for application-layer attacks; see `docs/mitre-retrieval-evaluation.md`. The category mapping file is a separate human-curated contextual source and must not be treated as model prediction.
 
 ## Reasoning, verification, and response
 

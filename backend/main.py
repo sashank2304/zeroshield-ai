@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from contextlib import asynccontextmanager
 from pathlib import Path
 
-from fastapi import FastAPI, File, HTTPException, UploadFile
+from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -18,6 +18,8 @@ from services.mitre_service import MitreService
 from services.sample_service import SampleService
 from services.llm_service import reason
 from schemas.analysis import AnalysisRequest
+from schemas.response import ApprovalRequest, FeedbackRequest
+from security import require_operator
 from services.bandit_service import BanditService
 from services.verification_service import verify_record
 
@@ -44,7 +46,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http
 def health():
     d = services.get("detector")
     if not d or not d.loaded:
-        return {"status": "degraded", "model": "Deep SVDD", "threshold": 0.0614192100, "features": 43}
+        return {"status": "degraded", "model": "Deep SVDD", "threshold": None, "features": None}
     return {"status": "ok", "model": "Deep SVDD", "threshold": d.threshold, "features": len(d.features)}
 
 
@@ -134,27 +136,27 @@ def response_approvals():
     return {"pending": [x for x in services["bandit"].list_alerts() if x.get("approval_status") == "PENDING"]}
 
 
-@app.post("/api/response/approval/{alert_id}")
-def response_approval(alert_id: str, payload: dict):
+@app.post("/api/response/approval/{alert_id}", dependencies=[Depends(require_operator)])
+def response_approval(alert_id: str, payload: ApprovalRequest):
     try:
-        return services["bandit"].decide_approval(alert_id, str(payload.get("choice", "")).upper())
+        return services["bandit"].decide_approval(alert_id, payload.choice)
     except KeyError as exc:
         raise HTTPException(404, "Alert not found.") from exc
     except ValueError as exc:
         raise HTTPException(409, str(exc)) from exc
 
 
-@app.post("/api/response/feedback/{alert_id}")
-def response_feedback(alert_id: str, payload: dict):
+@app.post("/api/response/feedback/{alert_id}", dependencies=[Depends(require_operator)])
+def response_feedback(alert_id: str, payload: FeedbackRequest):
     try:
-        return services["bandit"].feedback(alert_id, bool(payload["ground_truth_attack"]), payload.get("reviewer_choice"))
+        return services["bandit"].feedback(alert_id, payload.ground_truth_attack, payload.reviewer_choice)
     except KeyError as exc:
-        raise HTTPException(404, "Alert not found or ground_truth_attack was not supplied.") from exc
+        raise HTTPException(404, "Alert not found.") from exc
     except ValueError as exc:
         raise HTTPException(409, str(exc)) from exc
 
 
-@app.post("/api/response/reset-policy")
+@app.post("/api/response/reset-policy", dependencies=[Depends(require_operator)])
 def reset_policy():
     services["bandit"].reset_policy()
     return {"status": "policy_reset", "policy_version": "linucb-v1", "ledger_preserved": True}
@@ -185,7 +187,7 @@ def response_experiment_plot(plot_name: str):
     raise HTTPException(404, "No completed replay plot is available.")
 
 
-@app.post("/api/response/replay/start")
+@app.post("/api/response/replay/start", dependencies=[Depends(require_operator)])
 def start_response_replay():
     global replay_process
     with replay_lock:

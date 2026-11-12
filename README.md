@@ -48,7 +48,7 @@ npm ci
 npm run dev
 ```
 
-Open `http://localhost:5173`; API docs are at `http://localhost:8000/docs`. Check `http://localhost:8000/api/health` for `{"status":"ok"...}`. If PowerShell blocks venv activation, use `backend\.venv\Scripts\python.exe -m pip ...` and `backend\.venv\Scripts\python.exe -m uvicorn backend.main:app --reload` without activating.
+Open `http://localhost:5173`; API docs are at `http://localhost:8000/docs`. Check `http://localhost:8000/api/health` for `{"status":"ok"...}`. If PowerShell blocks venv activation, use `backend\.venv\Scripts\python.exe -m pip ...` and `backend\.venv\Scripts\python.exe -m uvicorn main:app --app-dir backend --reload` (run from the clone root; `backend.main:app` does not work because the backend imports its own `services` package) without activating.
 
 No API key is needed for detector, XAI, retrieval, verification, or fallback reasoning. For optional OpenAI reasoning, set the key only in the current PowerShell session (never commit it):
 
@@ -66,6 +66,20 @@ Set-Location .\zeroshield-ai\LLM
 ```
 
 The source JSON is included. Run index generation from `LLM` because the existing builder uses paths relative to its working directory. `pickle` indexes must only be loaded from this trusted repository or rebuilt locally.
+
+## Operator actions and access
+
+Approving an action, recording feedback, resetting the policy and starting a replay change the ledger and the learned policy, so they are not open to the network. By default they are accepted only from the local machine (the dashboard runs on localhost). To allow an API client elsewhere, set `ZEROSHIELD_ADMIN_TOKEN` before starting the backend and send the same value in an `X-Admin-Token` header; the token is then required even locally.
+
+## Replay experiment
+
+```powershell
+Set-Location .\backend
+python run_response_experiment.py                                   # ten cached demo samples
+python run_response_experiment.py --stream alerts.jsonl --folds 5 --seed 20261020
+```
+
+Only flows the detector flagged are routed to the response policy; flows below the threshold never become alerts and are counted separately. Routed alerts are split into folds, and every alert is evaluated once by a policy that did not train on it, next to three baselines. Each run writes a new folder under `backend/experiments/contextual_bandit_replay_v1/` (the dashboard's "Start replay" button runs the same script). With the ten-row demo cache only five flows are flagged and all five are attacks, so it cannot separate the policies; use `--stream` with a larger prepared set for any comparison.
 
 ## Demo and lightweight checks
 
@@ -91,12 +105,10 @@ The standalone verifier expects the `ZeroShield_Verification_Handoff` fixture-re
 
 - The existing fitted scaler itself was not found. Only prepared/scaled inputs can be analyzed faithfully; there is no supported raw feature ingestion transform.
 - LLM output is optional and untrusted; verification checks evidence consistency, not whether an alert is truly malicious.
-- MITRE candidates and TF-IDF similarities are contextual suggestions, not confirmed techniques.
+- MITRE candidates and TF-IDF similarities are contextual suggestions, not confirmed techniques. On held-out evidence the stage finds a relevant technique for 19 of 30 flagged Mirai floods and 0 of 23 flagged web attacks (flow statistics cannot identify application-layer attacks); the five candidates are not a ranking. See `docs/mitre-retrieval-evaluation.md`.
 - Actions are simulated; no host/network operation occurs. Labels enter only through simulation feedback.
+- State-changing endpoints (approve, feedback, policy reset, replay start) are limited to localhost, or to callers with `X-Admin-Token` when `ZEROSHIELD_ADMIN_TOKEN` is set. Feedback accepts the simulated outcome from the caller, so do not expose the API publicly.
+- Checkpoints are loaded with `weights_only=True`. The TF-IDF index is verified against `LLM/rag_store/mitre_tfidf.pkl.sha256` before it is unpickled.
 - Dataset provenance/access instructions are not included. Arrange authorized access separately.
-- On 2026-10-21, `npm audit --omit=dev` reported two high-severity advisories affecting `source-map-js` and Vite in the current frontend lockfile. Review/update the frontend lockfile before production use.
+- Frontend dependencies were updated so `npm audit --omit=dev` reports no vulnerabilities, and the React packages are pinned to the installed major versions. Re-run the audit before any production use.
 - Keep `.env`, API keys, local data, virtual environments, generated output, and the mutable database out of source control.
-
-## Repository status
-
-This working directory did not contain a `.git` directory when readiness was assessed. Therefore there is no verified branch, remote, index, or commit to inspect, and an actual fresh `git clone` test cannot be claimed here. Run the steps above after the repository is initialized and pushed to its approved remote; check every ignored runtime artifact is represented in the published repository before declaring clean-clone readiness.

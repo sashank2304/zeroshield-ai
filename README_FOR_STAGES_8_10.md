@@ -9,7 +9,7 @@ ZeroShield AI is a research prototype for detecting unusual network-flow behavio
 1. **Stage 1 — ingestion and feature engineering:** training/evaluation scripts work with prepared, scaled CSV data. The running API accepts one prepared 43-feature record; it does not perform raw-to-scaled conversion.
 2. **Stage 2 — detector:** the saved Deep SVDD checkpoint is loaded by `backend/services/model_service.py`.
 3. **Stage 3 — XAI:** the API computes zero-baseline feature perturbation sensitivities for the current record.
-4. **Stage 4 — MITRE retrieval:** the API creates a query from top observed feature values, perturbation contributions, score, and threshold, then retrieves from the local TF-IDF index. A separate project category mapping is also retained.
+4. **Stage 4 — MITRE retrieval:** the API turns the clearly abnormal top XAI features into a plain-language behaviour query and retrieves network-observable techniques from the local TF-IDF index, abstaining when there is no clear behaviour. A separate project category mapping is also retained.
 5. **Stage 5 — LLM:** optional OpenAI JSON reasoning; a labeled fallback is returned without a key or on provider failure.
 6. **Stage 6 — verification:** the backend checks schema, score/status, numeric grounding, feature support/direction, retrieved technique IDs, and uncertainty. The standalone verifier checks saved Markdown report fixtures.
 7. **Stage 7 — contextual policy:** LinUCB chooses among `AUTO_REMEDIATE`, `CONFIRM_TO_ACT`, `HUMAN_REVIEW`, and `MONITOR_ONLY`; selected action and evidence are recorded in SQLite.
@@ -27,7 +27,8 @@ Stages 8–10 are the next development scope unless inspection at implementation
 - `backend/services/llm_service.py`: optional API and fallback reasoning.
 - `backend/services/verification_service.py`: structured response checks.
 - `backend/services/bandit_service.py`: LinUCB, action simulation, approval, feedback, SQLite ledger.
-- `backend/schemas/analysis.py`: request schema.
+- `backend/schemas/analysis.py`, `backend/schemas/response.py`: request schemas (strict boolean for feedback, approval choice).
+- `backend/security.py`: localhost-or-token access control for state-changing endpoints.
 - `backend/data/demo_samples.json`: small prepared-space cache. `zeroshield_ledger.sqlite3` is generated locally and ignored.
 - `backend/tests/`: backend policy and adapter tests.
 - `backend/run_response_experiment.py`, `backend/response_experiment_config.json`: replay/experiment code and configuration.
@@ -49,7 +50,7 @@ Score is squared Euclidean distance from the network embedding to the stored cen
 
 ## E. Stage 4 — MITRE ATT&CK retrieval
 
-`backend/services/mitre_service.py` loads `LLM/rag_store/mitre_tfidf.pkl` containing documents, fitted `TfidfVectorizer`, and sparse matrix. It uses cosine-equivalent dot products from the normalized TF-IDF representation, returning up to five positive-score records with IDs, names, descriptions, URLs, tactics, platforms, and similarity. Query text uses the top eight observed feature names/values/contributions and anomaly score/threshold; it does not require attack labels. `model_training/outputs/Deep_SVDD_MITRE_mapping_for_LLM.json` separately contains project category candidates.
+`backend/services/mitre_service.py` loads `LLM/rag_store/mitre_tfidf.pkl` containing documents, fitted `TfidfVectorizer`, and sparse matrix. It uses cosine-equivalent dot products from the normalized TF-IDF representation, returning up to five records with IDs, names, descriptions, URLs, tactics, platforms, and similarity. The query is plain-language behaviour built from the top eight XAI features that push the score up and sit clearly outside the benign range (hand-written feature-to-behaviour map `BEHAVIOR_ONTOLOGY`), never from attack labels or raw numbers. Only techniques with a network-observable tactic and a similarity of at least 0.15 are returned; with no clear behaviour the stage abstains. Held-out evaluation (`python backend/evaluate_retrieval.py`, details in `docs/mitre-retrieval-evaluation.md`): a relevant technique for 19 of 53 flagged samples, i.e. 19 of 30 Mirai floods and 0 of 23 web attacks. `model_training/outputs/Deep_SVDD_MITRE_mapping_for_LLM.json` separately contains project category candidates.
 
 The 5.9 MB index is small enough to include and is required for behavior retrieval. It can be rebuilt from the included `LLM/data/mitre_enterprise_techniques.json` by running from `LLM`:
 
@@ -66,7 +67,7 @@ The script writes `LLM/rag_store/mitre_tfidf.pkl`; execute it only against trust
 
 ## G. Stage 6 — verification
 
-The live entry point is `backend/services/verification_service.py:verify_record`. Inputs are detector analysis, MITRE result, and reasoning record. Outputs include verdict (`VERIFIED`, `UNCERTAIN`, `REJECTED`), equal-weight check pass fraction, per-check details, and failed check names. Critical failures reject; any failed check makes the record uncertain. It checks required report fields, score/threshold status agreement, supported numeric claims, XAI feature names and direction, and that mentioned ATT&CK IDs were retrieved. Tests for the live adapter are in `backend/tests/test_pipeline_adapters.py`.
+The live entry point is `backend/services/verification_service.py:verify_record`. Inputs are detector analysis, MITRE result, and reasoning record. Outputs include verdict (`VERIFIED`, `UNCERTAIN`, `REJECTED`), equal-weight check pass fraction, per-check details, and failed check names. Critical failures reject; any failed check makes the record uncertain. It runs 11 checks: required report fields, the cited score, negation-aware agreement with the detector decision ("not anomalous" for a flagged flow fails), numeric claims grounded in the evidence (coarse roundings must stay within 10% of the real value), XAI feature names and direction, retrieved technique IDs only, no invented IPs/MACs/dates/ports/URLs, no unhedged certainty claims ("this confirms..."), no claim that a response was already carried out, and a limitations statement. When the reasoning is the built-in template (no API key) the result carries `reasoning_mode` and a `limitation` saying the check only confirms internal consistency, because code wrote the report from the same evidence. Tests: `backend/tests/test_verification_service.py` (damaged reports must fail, honest hedged reports must pass) and `test_pipeline_adapters.py`.
 
 Standalone `ZeroShield_Verification_Handoff/verify_soc_report.py` verifies saved Markdown report content against its evidence record; run its tests from that directory. Its fixtures include explicit caveats that the sample threshold is not verified for that checkpoint. Do not conflate this separate report verifier with the live structured adapter.
 
@@ -77,9 +78,9 @@ Standalone `ZeroShield_Verification_Handoff/verify_soc_report.py` verifies saved
 | Outcome | AUTO_REMEDIATE | CONFIRM_TO_ACT | HUMAN_REVIEW | MONITOR_ONLY |
 |---|---:|---:|---:|---:|
 | attack | 5 | 3 | 2 | -6 |
-| benign | -12 | -2 | -2 | 1 |
+| benign | -12 | -3 | -2 | 1 |
 
-Rejected approval has separate reward values (attack -6, benign -2). Feedback is idempotent and only updates after feedback; action context excludes labels/outcomes. The SQLite database stores alert ledger and policy state. Baselines include fixed rule, seeded random, and always human review. Replay and results are in `backend/run_response_experiment.py` and `backend/experiments/contextual_bandit_replay_v1/`. These are offline simulated rewards, not real operational utility. Automatic remediation is only a simulation and is safety-masked based on detection and verification confidence.
+This is reward table `designed-simulation-v2`. Under v1, `CONFIRM_TO_ACT` paid -2 on benign flows, so it was at least as good as `HUMAN_REVIEW` for both outcomes and review could never be the best action. v2 makes approving a containment of a benign flow cost more than plain triage (analyst time plus the risk of a wrongful block being approved), which gives every action a region: monitor below an attack probability of 0.27, human review 0.27-0.50, confirm 0.50-0.82, auto-remediate above 0.82 (`decision_regions()` in `bandit_service.py`; v1 is kept in `REWARD_TABLES` so older results stay reproducible, and every rewarded record stores its `reward_version`). These values are designed trade-offs, not measured costs; change the table deliberately and bump the version. Rejected approval has separate reward values (attack -6, benign -2). Feedback is idempotent and only updates after feedback; action context excludes labels/outcomes. The SQLite database stores alert ledger and policy state. Baselines include fixed rule, seeded random, and always human review. Replay and results are in `backend/run_response_experiment.py` and `backend/experiments/contextual_bandit_replay_v1/`. These are offline simulated rewards, not real operational utility. Automatic remediation is only a simulation and is safety-masked based on detection and verification confidence.
 
 ## I. Stages 8–10 implementation contract
 
@@ -132,3 +133,22 @@ Open `http://localhost:5173` and check `http://localhost:8000/api/health`. Optio
 | Secrets | `OPENAI_API_KEY`; local session/environment only, optional. |
 | Research outputs | Keep concise reports and figures where suitable; exclude large intermediate arrays and alternative model checkpoints. |
 
+## M. Changes made after the repository audit
+
+Ledger and policy (`bandit_service.py`, schema `alert-record-v2`):
+- Outcome, reward and policy update commit in one SQLite transaction. A failure rolls everything back and the same feedback can be retried. Records stranded by the old two-step write (reward saved, policy never updated) are repaired by the next feedback call.
+- Every record keeps an append-only `history` (`ACTION_SELECTED`, `APPROVAL_DECIDED`, `OUTCOME_OBSERVED`, `POLICY_UPDATED`) with timestamps, plus `schema_version`, `reward_version`, `feedback_at`, `policy_updated_at`, `policy_state_at_selection` and `updated_policy_version`.
+- Approval and feedback take the write lock first, so two simultaneous clicks cannot both succeed.
+- A rejected approval on a benign flow costs -2 (analyst time only); an approved one costs -3.
+
+Replay (`run_response_experiment.py`): only detector-flagged flows are routed; k-fold evaluation (each alert evaluated once by a policy that did not train on it); reward version taken from the code; `--stream`, `--folds`, `--seed`; logic is importable without PyTorch and tested in `tests/test_replay_experiment.py`. Previous run folders were removed: they scored flows the detector never flagged. Regenerate with `python run_response_experiment.py`.
+
+API and dependencies: strict request schemas, operator access control, checkpoint loaded with `weights_only=True`, SHA-256 check before the TF-IDF index is unpickled, `/api/health` no longer invents a threshold, frontend dependencies updated to 0 audit vulnerabilities with React packages pinned.
+
+## N. Open work for Stages 8-10
+
+- **Replay stream.** The ten-row demo cache routes five flows and all five are attacks, so it contains no false positive and cannot separate the policies (on it the bandit and the fixed rule both average +5.0). Build a larger prepared stream from the local datasets that includes benign flows the detector flags, run it with `--stream` over several seeds, and report the mean and spread. Test how sensitive the policy comparison is to the reward values.
+- **Dashboard.** Add an alert-detail view that loads the stored record (`BanditService.get_alert` exists; there is no endpoint yet), a timeline from `history`, policy and reward versions, a live cumulative-reward chart from the ledger, and a paginated ledger (it shows the 15 newest plus a raw JSON drawer).
+- **Verification on a real LLM.** In the app, verification has only run on template reasoning. Run it on OpenAI or local-LLM output and report the verified/uncertain/rejected shares.
+- **Legacy `LLM/` outputs** pair the old checkpoint with the tuned threshold (see `LLM/README.md`). Regenerating them needs the datasets.
+- **No scaler artifact**, so the app and any live-capture demo accept only already-scaled rows.

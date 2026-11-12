@@ -284,3 +284,6 @@ model_training/outputs/percentile_comparison_experiment/models/
 
 # Build output (source, package manifest and lockfile are retained)
 frontend/dist/
+
+# Per-fold replay databases are throwaway working files
+backend/experiments/**/training_policy*.sqlite3

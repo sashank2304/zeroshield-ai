@@ -1,5 +1,15 @@
 # ZeroShield AI - Teammate Handoff
 
+> **LEGACY NOTICE - read first.** `xai_explain.py`, `evaluate_zero_day.py`, `score_validation.py` and
+> `diagnose_svdd.py` load `Deep_SVDD.pt`, the older network (43 -> 64 -> 32 -> 16) saved by `models.py`.
+> It stores **no threshold**. These scripts score it against 0.06141921, which is the stored threshold of a
+> different network, `model_training/outputs/Deep_SVDD_Tuned.pt` (hidden layers [128, 64], 95th-percentile threshold).
+> Everything derived from them (`xai_results/`, `soc_reports/`, `sample_*_alert.json`, and the copies in
+> `ZeroShield_Verification_Handoff/soc_reports/`) therefore pairs one model with another model's threshold.
+> In those files, `predicted_anomaly: false` for Mirai flows is an artifact of that pairing, not a result about
+> the detector the application uses. Use them as **report-format examples only**.
+> The application (`backend/`) uses the tuned checkpoint consistently. See `docs/thresholds.md`.
+
 ## Project pipeline
 Deep SVDD anomaly detection
 -> XAI feature explanations

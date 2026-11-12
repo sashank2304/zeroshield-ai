@@ -1,3 +1,6 @@
+# LEGACY SCRIPT - do not use it for results. It loads the older Deep_SVDD.pt (stores no threshold) and
+# compares it with 0.06141921, the stored threshold of a DIFFERENT network (Deep_SVDD_Tuned.pt).
+# See LLM/README.md and docs/thresholds.md.
 
 from pathlib import Path
 import torch

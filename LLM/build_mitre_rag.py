@@ -1,3 +1,4 @@
+import hashlib
 import json
 import pickle
 from pathlib import Path
@@ -56,3 +57,8 @@ print(f"Loaded techniques: {len(documents)}")
 print(f"Vocabulary size: {len(vectorizer.vocabulary_)}")
 print(f"Matrix shape: {matrix.shape}")
 print(f"Saved index: {OUT_DIR / 'mitre_tfidf.pkl'}")
+
+# Record the index hash; the backend refuses to unpickle an index that does not match it.
+digest = hashlib.sha256((OUT_DIR / "mitre_tfidf.pkl").read_bytes()).hexdigest()
+(OUT_DIR / "mitre_tfidf.pkl.sha256").write_text(f"{digest}  mitre_tfidf.pkl\n", encoding="utf-8")
+print(f"Saved integrity hash: {digest[:16]}...")

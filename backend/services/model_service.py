@@ -31,7 +31,7 @@ class Detector:
         self.latent_dim = 0
         self.threshold = 0.06141921002417763
         try:
-            checkpoint = torch.load(self.model_path, map_location=self.device, weights_only=False)
+            checkpoint = torch.load(self.model_path, map_location=self.device, weights_only=True)
             self.features = list(checkpoint["features"])
             self.hidden = list(checkpoint["hidden"])
             self.latent_dim = int(checkpoint["latent_dim"])
